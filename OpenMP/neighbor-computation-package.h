@@ -1,11 +1,5 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef NEIGHBOR_COMPUTATION_PACKAGE_H
 #define NEIGHBOR_COMPUTATION_PACKAGE_H
-
 #define INIT_CHUNK_SIZE 50
 
 typedef struct neighbor_computation_package {

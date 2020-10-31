@@ -7,12 +7,9 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
-
 #include "graph_binary.h"
 #include "community.h"
-
 using namespace std;
-
 char *filename = NULL;
 char *filename_w = NULL;
 char *filename_comm = NULL;
@@ -26,8 +23,7 @@ int k1 = 16;
 bool verbose = false;
 bool write_community = false;
 
-void usage(char *prog_name, const char *more)
-{
+void usage(char *prog_name, const char *more){
   cerr << more;
   cerr << "usage: " << prog_name << " input_file [-w weight_file] [-p part_file] [-q epsilon] [-l display_level] [-v] [-h]" << endl
        << endl;
@@ -44,17 +40,11 @@ void usage(char *prog_name, const char *more)
   exit(0);
 }
 
-void parse_args(int argc, char **argv)
-{
-  if (argc < 2)
-    usage(argv[0], "Bad arguments number\n");
-
-  for (int i = 1; i < argc; i++)
-  {
-    if (argv[i][0] == '-')
-    {
-      switch (argv[i][1])
-      {
+void parse_args(int argc, char **argv){
+  if (argc < 2) usage(argv[0], "Bad arguments number\n");
+  for (int i = 1; i < argc; i++){
+    if (argv[i][0] == '-'){
+      switch (argv[i][1]){
       case 'w':
         type = WEIGHTED;
         filename_w = argv[i + 1];
@@ -88,25 +78,20 @@ void parse_args(int argc, char **argv)
         usage(argv[0], "Unknown option\n");
       }
     }
-    else
-    {
-      if (filename == NULL)
-        filename = argv[i];
-      else
-        usage(argv[0], "More than one filename\n");
+    else{
+      if (filename == NULL) filename = argv[i];
+      else usage(argv[0], "More than one filename\n");
     }
   }
 }
 
-void display_time(const char *str)
-{
+void display_time(const char *str){
   time_t rawtime;
   time(&rawtime);
   cerr << str << ": " << ctime(&rawtime);
 }
 
-void display_time(const char *str, time_t &prev)
-{
+void display_time(const char *str, time_t &prev){
   time_t rawtime;
   time(&rawtime);
   cerr << str << ": " << ctime(&rawtime);
@@ -114,29 +99,21 @@ void display_time(const char *str, time_t &prev)
   prev = rawtime;
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
   srand(time(NULL) + getpid());
-
   parse_args(argc, argv);
   time_t time_begin, time_end, prev;
   time(&time_begin);
   prev = time_begin;
-  if (verbose)
-    display_time("Begin");
-
+  if (verbose) display_time("Begin");
   Community c(filename, filename_w, type, -1, precision);
-  if (filename_part != NULL)
-    c.init_partition(filename_part);
+  if (filename_part != NULL) c.init_partition(filename_part);
   Graph g;
   bool improvement = true;
   double mod = c.modularity(), new_mod;
   int level = 0;
-
-  do
-  {
-    if (verbose)
-    {
+  do{
+    if (verbose){
       cerr << "level " << level << ":\n";
       display_time("  start computation");
       cerr << "  network size: "
@@ -147,33 +124,20 @@ int main(int argc, char **argv)
 
     improvement = c.one_level();
     new_mod = c.modularity();
-    if (++level == display_level)
-      g.display();
-    if (display_level == -1)
-      c.display_partition();
+    if (++level == display_level) g.display();
+    if (display_level == -1) c.display_partition();
     g = c.partition2graph_binary();
     c = Community(g, -1, precision);
-
-    if (verbose)
-      cerr << "  modularity increased from " << mod << " to " << new_mod << endl;
-
+    if (verbose) cerr << "  modularity increased from " << mod << " to " << new_mod << endl;
     mod = new_mod;
-    if (verbose)
-      display_time("  end computation", prev);
-
-    if (filename_part != NULL && level == 1) // do at least one more computation if partition is provided
-      improvement = true;
+    if (verbose) display_time("  end computation", prev);
+    if (filename_part != NULL && level == 1) improvement = true;
   } while (improvement);
-
   time(&time_end);
-  if (verbose)
-  {
+  if (verbose){
     display_time("End");
     cerr << "Total duration: " << (time_end - time_begin) << " sec." << endl;
   }
-  if (write_community)
-  {
-    g.write_community(filename_comm);
-  }
+  if (write_community) g.write_community(filename_comm);
   cerr << new_mod << endl;
 }

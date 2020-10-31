@@ -1,14 +1,7 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef COMMUNITY_EXCHANGE_H
 #define COMMUNITY_EXCHANGE_H
-
 typedef struct community_developer community_developer;
 typedef struct execution_settings execution_settings;
-
 typedef struct community_exchange {
 	int node;
 	int dest;

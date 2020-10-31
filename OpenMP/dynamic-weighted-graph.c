@@ -1,8 +1,3 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "dynamic-weighted-graph.h"

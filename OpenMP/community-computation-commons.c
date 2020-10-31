@@ -1,11 +1,5 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "dynamic-weighted-graph.h"
 
 int community_vector_init(int **community_vector, int size) {

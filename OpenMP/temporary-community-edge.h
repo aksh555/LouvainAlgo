@@ -1,8 +1,3 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef TEMPORARY_COMMUNITY_EDGE_H
 #define TEMPORARY_COMMUNITY_EDGE_H
 

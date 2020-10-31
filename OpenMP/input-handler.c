@@ -1,8 +1,3 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #include "parse-args.h"
 #include "execution-settings.h"
 #include "dynamic-graph.h"
@@ -11,7 +6,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "shared-graph.h"
-
 #define METIS_MAXIMUM_GRAPH_DESCRIPTOR_LENGTH 16
 #define METIS_MAXIMUM_DIGITS_PER_NUMBER 16
 
@@ -112,17 +106,6 @@ int parse_input(dynamic_graph *dg, dynamic_weighted_graph *dwg, execution_settin
 
 	printf(PRINTING_UTILITY_STARS);
 	printf("Parsing input graph...\n");
-
-//	if(settings->graph_type == WEIGHTED) {
-//		if(!dynamic_weighted_graph_parse_file(dwg, settings->input_file))
-//			valid = 0;
-//	} else {
-//		// TODO Use actual not weighted graph
-//		settings->graph_type = WEIGHTED;
-//
-//		if(!dynamic_weighted_graph_parse_not_weighted_file(dwg, settings->input_file, DEFAULT_WEIGHT_FOR_NOT_WEIGHTED_EDGES))
-//			valid = 0;
-//	}
 
 	switch(settings->input_file_format) {
 	case FILE_FORMAT_EDGE_LIST_NOT_WEIGHTED:

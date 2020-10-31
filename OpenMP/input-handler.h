@@ -1,8 +1,3 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef INPUT_HANDLER_H
 #define INPUT_HANDLER_H
 

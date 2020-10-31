@@ -1,7 +1,3 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
 
 #include "community-computation-weighted.h"
 #include "temporary-community-edge.h"

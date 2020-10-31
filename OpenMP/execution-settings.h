@@ -1,8 +1,3 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef EXECUTION_SETTINGS_H
 #define EXECUTION_SETTINGS_H
 

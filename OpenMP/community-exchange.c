@@ -1,25 +1,11 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #include "community-exchange.h"
-
 #include "community-development.h"
 #include "silent-switch.h"
 #include "execution-settings.h"
-
 #include "printing_controller.h"
-
 #include <stdio.h>
 #include <omp.h>
-
-//#ifdef SILENT_SWITCH_SORT_ON
-//#define printf(...)
-//#endif
-
 #define MINIMUM_PARTITION_SIZE 100
-
 inline void set_exchange_ranking(community_exchange *ce, int node, int dest, int k_i_in_src, int k_i_in_dest, double modularity_delta) {
 	ce->node = node;
 	ce->dest = dest;

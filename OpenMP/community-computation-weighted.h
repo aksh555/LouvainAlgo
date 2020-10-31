@@ -1,11 +1,5 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef COMMUNITY_COMPUTATION_WEIGHTED_H
 #define COMMUNITY_COMPUTATION_WEIGHTED_H
-
 typedef struct community_developer community_developer;
 typedef struct community_exchange community_exchange;
 typedef struct dynamic_weighted_graph dynamic_weighted_graph;

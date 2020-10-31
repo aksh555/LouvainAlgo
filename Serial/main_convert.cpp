@@ -1,15 +1,12 @@
 #include "graph.h"
-
 using namespace std;
-
 char *infile = NULL;
 char *outfile = NULL;
 char *outfile_w = NULL;
 int type = UNWEIGHTED;
 bool do_renumber = false;
 
-void usage(char *prog_name, const char *more)
-{
+void usage(char *prog_name, const char *more){
   cerr << more;
   cerr << "usage: " << prog_name << " -i input_file -o outfile [-r] [-w outfile_weight]" << endl
        << endl;
@@ -20,14 +17,10 @@ void usage(char *prog_name, const char *more)
   exit(0);
 }
 
-void parse_args(int argc, char **argv)
-{
-  for (int i = 1; i < argc; i++)
-  {
-    if (argv[i][0] == '-')
-    {
-      switch (argv[i][1])
-      {
+void parse_args(int argc, char **argv){
+  for (int i = 1; i < argc; i++){
+    if (argv[i][0] == '-'){
+      switch (argv[i][1]){
       case 'i':
         if (i == argc - 1)
           usage(argv[0], "Infile missing\n");
@@ -52,25 +45,17 @@ void parse_args(int argc, char **argv)
         usage(argv[0], "Unknown option\n");
       }
     }
-    else
-    {
+    else{
       usage(argv[0], "More than one filename\n");
     }
   }
-  if (infile == NULL || outfile == NULL)
-    usage(argv[0], "In or outfile missing\n");
+  if (infile == NULL || outfile == NULL) usage(argv[0], "In or outfile missing\n");
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
   parse_args(argc, argv);
-
   Graph g(infile, type);
-
   g.clean(type);
-
-  if (do_renumber)
-    g.renumber(type);
-
+  if (do_renumber) g.renumber(type);
   g.display_binary(outfile, outfile_w, type);
 }

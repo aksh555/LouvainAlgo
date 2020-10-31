@@ -1,13 +1,6 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef PARSE_ARGS_H
 #define PARSE_ARGS_H
-
 #include "execution-settings.h"
-
 #define DEFAULT_MINIMUM_PHASE_IMPROVEMENT 0
 #define DEFAULT_MINIMUM_ITERATION_IMPROVEMENT 0
 #define DEFAULT_NUMBER_OF_THREADS 1

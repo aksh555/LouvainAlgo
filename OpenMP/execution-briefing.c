@@ -1,15 +1,8 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #include "execution-briefing.h"
 #include <stdio.h>
 #include "utilities.h"
-
 void execution_briefing_print(execution_briefing *briefing) {
 	printf(PRINTING_UTILITY_STARS);
-
 	printf("Execution briefing:\n\n");
 	printf("\tExecution successful:                                %s\n", (briefing->execution_successful ? "Yes" : "No"));
 	printf("\tNumber of algorithm runs:                            %d\n", briefing->performed_runs);

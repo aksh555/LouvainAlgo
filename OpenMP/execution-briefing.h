@@ -1,13 +1,6 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef EXECUTION_BRIEFING_H
 #define EXECUTION_BRIEFING_H
-
 #define ILLEGAL_ITERATIONS_NUMBER -1
-
 typedef struct execution_briefing {
 	int performed_runs;
 	int execution_successful;

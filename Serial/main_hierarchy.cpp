@@ -7,14 +7,10 @@
 #include <map>
 #include <set>
 #include <algorithm>
-
 using namespace std;
-
 int display_level = -1;
 char *filename = NULL;
-
-void usage(char *prog_name, const char *more)
-{
+void usage(char *prog_name, const char *more){
   cerr << more;
   cerr << "usage: " << prog_name << " input_file [options]" << endl
        << endl;
@@ -28,17 +24,11 @@ void usage(char *prog_name, const char *more)
   exit(0);
 }
 
-void parse_args(int argc, char **argv)
-{
-  if (argc < 2)
-    usage(argv[0], "Bad arguments number\n");
-
-  for (int i = 1; i < argc; i++)
-  {
-    if (argv[i][0] == '-')
-    {
-      switch (argv[i][1])
-      {
+void parse_args(int argc, char **argv){
+  if (argc < 2) usage(argv[0], "Bad arguments number\n");
+  for (int i = 1; i < argc; i++){
+    if (argv[i][0] == '-'){
+      switch (argv[i][1]){
       case 'l':
         display_level = atoi(argv[i + 1]);
         i++;
@@ -50,64 +40,42 @@ void parse_args(int argc, char **argv)
         usage(argv[0], "Unknown option\n");
       }
     }
-    else
-    {
-      if (filename == NULL)
-        filename = argv[i];
-      else
-        usage(argv[0], "More than one filename\n");
+    else{
+      if (filename == NULL) filename = argv[i];
+      else usage(argv[0], "More than one filename\n");
     }
   }
-  if (filename == NULL)
-    usage(argv[0], "No input file has been provided.\n");
+  if (filename == NULL) usage(argv[0], "No input file has been provided.\n");
 }
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
   parse_args(argc, argv);
-
   vector<vector<int> > levels;
-
   ifstream finput;
   finput.open(filename, fstream::in);
-
   int l = -1;
-  while (!finput.eof())
-  {
+  while (!finput.eof()){
     int node, nodecomm;
     finput >> node >> nodecomm;
-
-    if (finput)
-    {
-      if (node == 0)
-      {
+    if (finput){
+      if (node == 0){
         l++;
         levels.resize(l + 1);
       }
       levels[l].push_back(nodecomm);
     }
   }
-
-  if (display_level == -1)
-  {
+  if (display_level == -1){
     cout << "Number of levels: " << levels.size() << endl;
     for (unsigned int i = 0; i < levels.size(); i++)
       cout << "level " << i << ": " << levels[i].size() << " nodes" << endl;
   }
-  else if (display_level < 0 || (unsigned)display_level >= levels.size())
-  {
-    cerr << "Incorrect level\n";
-  }
-  else
-  {
+  else if (display_level < 0 || (unsigned)display_level >= levels.size()) cerr << "Incorrect level\n";
+  else{
     vector<int> n2c(levels[0].size());
-
-    for (unsigned int i = 0; i < levels[0].size(); i++)
-      n2c[i] = i;
-
+    for (unsigned int i = 0; i < levels[0].size(); i++) n2c[i] = i;
     for (l = 0; l < display_level; l++)
       for (unsigned int node = 0; node < levels[0].size(); node++)
         n2c[node] = levels[l][n2c[node]];
-
     for (unsigned int node = 0; node < levels[0].size(); node++)
       cout << node << " " << n2c[node] << endl;
   }
