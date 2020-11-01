@@ -168,11 +168,6 @@ int find_communities(dynamic_graph *dg ,dynamic_weighted_graph *dwg, execution_s
 			printf("\n\nPHASE #%d:\n\nGraph size: %d\nInitial phase modularity: %f\n",phase_counter, dwg->size, final_phase_modularity);
 		}
 
-		if(settings->verbose) {
-			printf("\nInitial graph:\n");
-			dynamic_weighted_graph_print(*dwg);
-		}
-
 		if(settings->algorithm_version == ALGORITHM_VERSION_PARALLEL_2_NAIVE_PARTITION) {
 			if(phase_counter == 0)
 				// First phase, run partitioning

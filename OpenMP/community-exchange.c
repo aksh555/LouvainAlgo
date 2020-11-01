@@ -1,11 +1,25 @@
+/**
+ * Author: Andrea Bignoli
+ * E-mail: andrea.bignoli@gmail.com
+ */
+
 #include "community-exchange.h"
+
 #include "community-development.h"
 #include "silent-switch.h"
 #include "execution-settings.h"
+
 #include "printing_controller.h"
+
 #include <stdio.h>
 #include <omp.h>
+
+//#ifdef SILENT_SWITCH_SORT_ON
+//#define printf(...)
+//#endif
+
 #define MINIMUM_PARTITION_SIZE 100
+
 inline void set_exchange_ranking(community_exchange *ce, int node, int dest, int k_i_in_src, int k_i_in_dest, double modularity_delta) {
 	ce->node = node;
 	ce->dest = dest;
@@ -194,17 +208,6 @@ int community_exchange_parallel_quick_sort_main(community_exchange *exchange_ran
 
 	if(total_exchanges > base_partition_size * partitions_number)
 		base_partition_size++;
-
-#ifndef VERBOSE_TABLE
-	if(settings->verbose) {
-		printf("Starting sorting of %d node transfers using a maximum of %d threads.\n"
-				"Number of partitions: %d. Base partition size: %d.\n"
-				"Minimum allowed partition size: %d\n",
-				total_exchanges, number_of_threads,
-				partitions_number, base_partition_size,
-				MINIMUM_PARTITION_SIZE);
-	}
-#endif
 
 //	printf("\nSORTING EXCHANGES\n\nTotal exchanges: %d\nPartitions number: %d\nBase partition size: %d\nNumber of threads: %d\n\n", total_exchanges, partitions_number, base_partition_size, number_of_threads);
 	// Divide the input array in partition and qsort them in parallel

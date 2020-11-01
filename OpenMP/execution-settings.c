@@ -1,4 +1,5 @@
 #include "execution-settings.h"
+
 char * file_format_name(int id){
 	switch(id) {
 	case FILE_FORMAT_EDGE_LIST_NOT_WEIGHTED:
@@ -11,6 +12,7 @@ char * file_format_name(int id){
 		return FILE_FORMAT_INVALID_NAME;
 	}
 }
+
 int algorithm_version_parallel(int id){
 	switch(id) {
 	case ALGORITHM_VERSION_SEQUENTIAL_0:

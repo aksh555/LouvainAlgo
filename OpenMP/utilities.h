@@ -1,3 +1,8 @@
+/**
+ * Author: Andrea Bignoli
+ * E-mail: andrea.bignoli@gmail.com
+ */
+
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
@@ -24,7 +29,7 @@ int min(int a, int b);
 
 int max(int a, int b);
 
-inline int same(int x, int y);
+int same(int x, int y);
 
 float merge_average(float first_average, int first_number_of_averaged_elements, float second_average, int second_number_of_averaged_elements);
 

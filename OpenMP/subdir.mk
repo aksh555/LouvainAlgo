@@ -1,9 +1,14 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../algorithm-executor.c \
-../community-computation-commons.c \
-../community-computation-weighted-sequential.c \
-../community-computation-weighted.c \
 ../community-development.c \
+../community-computation-commons.c \
+../community-computation-weighted.c \
+../community-computation-weighted-sequential.c \
 ../community-exchange.c \
 ../dynamic-graph.c \
 ../dynamic-weighted-graph.c \
@@ -25,9 +30,9 @@ C_SRCS += \
 OBJS += \
 ./algorithm-executor.o \
 ./community-computation-commons.o \
+./community-development.o \
 ./community-computation-weighted-sequential.o \
 ./community-computation-weighted.o \
-./community-development.o \
 ./community-exchange.o \
 ./dynamic-graph.o \
 ./dynamic-weighted-graph.o \
@@ -48,10 +53,10 @@ OBJS += \
 
 C_DEPS += \
 ./algorithm-executor.d \
+./community-development.d \
 ./community-computation-commons.d \
 ./community-computation-weighted-sequential.d \
 ./community-computation-weighted.d \
-./community-development.d \
 ./community-exchange.d \
 ./dynamic-graph.d \
 ./dynamic-weighted-graph.d \
@@ -69,7 +74,6 @@ C_DEPS += \
 ./version-parallel-naive-partitioning.d \
 ./version-parallel-sort-select-chunks.d \
 ./vertex-following.d 
-
 
 # Each subdirectory must supply rules for building sources it contributes
 %.o: ../%.c

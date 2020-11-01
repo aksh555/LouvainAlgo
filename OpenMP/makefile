@@ -1,5 +1,3 @@
--include ../makefile.init
-
 RM := rm
 
 # All of the sources participating in the build are defined here
@@ -13,26 +11,21 @@ ifneq ($(strip $(C_DEPS)),)
 endif
 endif
 
--include ../makefile.defs
-
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
 all: find-communities-OpenMP
 
+%.o: %.c
+	gcc -fopenmp -O2 -g -w -c -fopenmp -o $@ $<
+
 # Tool invocations
-find-communities-OpenMP: $(OBJS)
-	@echo 'Building target: $@'
-	@echo 'Invoking: GCC C Linker'
-	gcc -fopenmp  -o "find-communities-OpenMP" $(OBJS) $(USER_OBJS) $(LIBS)
-	@echo 'Finished building target: $@'
-	@echo ' '
+find-communities-OpenMP: $(OBJS) $(USER_OBJS)
+	gcc -fopenmp -w -o "find-communities-OpenMP" $(OBJS) $(USER_OBJS)
 
 # Other Targets
 clean:
-	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS)
+	-$(RM) $(EXECUTABLES)$(OBJS) find-communities-OpenMP
 
 .PHONY: all clean dependents
 .SECONDARY:
-
--include ../makefile.targets

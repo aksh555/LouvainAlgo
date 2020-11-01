@@ -1,3 +1,8 @@
+/**
+ * Author: Andrea Bignoli
+ * E-mail: andrea.bignoli@gmail.com
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "dynamic-graph.h"
@@ -5,6 +10,11 @@
 #include "silent-switch.h"
 #include "dynamic-weighted-graph.h"
 #include "utilities.h"
+
+//#ifdef SILENT_SWITCH_DYNAMIC_GRAPH_ON
+//#define printf(...)
+//#endif
+
 int dynamic_edge_array_init(dynamic_edge_array *da, int initSize)
 {
 	da->size = initSize;

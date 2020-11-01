@@ -1,7 +1,14 @@
+/**
+ * Author: Andrea Bignoli
+ * E-mail: andrea.bignoli@gmail.com
+ */
+
 #ifndef COMMUNITY_EXCHANGE_H
 #define COMMUNITY_EXCHANGE_H
+
 typedef struct community_developer community_developer;
 typedef struct execution_settings execution_settings;
+
 typedef struct community_exchange {
 	int node;
 	int dest;
@@ -10,7 +17,7 @@ typedef struct community_exchange {
 	double modularity_delta;
 } community_exchange;
 
-inline void set_exchange_ranking(community_exchange *ce, int node, int dest, int k_i_in_src, int k_i_in_dest, double modularity_delta);
+void set_exchange_ranking(community_exchange *ce, int node, int dest, int k_i_in_src, int k_i_in_dest, double modularity_delta);
 
 int sequential_select_pairings(community_developer *cd, community_exchange *exchange_rankings_sorted, int exchange_rankings_number, short **selected, int *stop_scanning_position);
 

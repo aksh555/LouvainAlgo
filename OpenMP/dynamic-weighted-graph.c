@@ -1,3 +1,8 @@
+/**
+ * Author: Andrea Bignoli
+ * E-mail: andrea.bignoli@gmail.com
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "dynamic-weighted-graph.h"
@@ -211,7 +216,6 @@ int dynamic_weighted_graph_insert_force_directed(dynamic_weighted_graph *da, int
 
     return 1;
 }
-
 void dynamic_weighted_graph_print(dynamic_weighted_graph dg)
 {
      int i;
@@ -230,7 +234,6 @@ void dynamic_weighted_graph_print(dynamic_weighted_graph dg)
 
      return;
 }
-
 // Retrieve neighborhood dynamic array of given node
 dynamic_weighted_edge_array DynGraphRetrieveNeighbors(dynamic_weighted_graph da, int node)
 {

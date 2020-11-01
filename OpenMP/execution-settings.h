@@ -1,3 +1,8 @@
+/**
+ * Author: Andrea Bignoli
+ * E-mail: andrea.bignoli@gmail.com
+ */
+
 #ifndef EXECUTION_SETTINGS_H
 #define EXECUTION_SETTINGS_H
 
@@ -42,29 +47,19 @@ typedef struct execution_settings {
 	char *output_communities_file;
 	char *output_graphs_file;
 	int number_of_threads;
-	int verbose;
-
-	// Tells that the program should be executed using the sequential implementation
-//	int sequential;
 	int benchmark_runs;
-
 	int execution_settings_parallel_partitions_higher_power_of_2;
-
 	int execution_settings_sort_select_chunks_chunk_size;
-
 	int execution_settings_vertex_following;
-
 	int algorithm_version;
-	// Phase executors, set by execution handler depending on chosen algorithm version. Could potentially be controlled at runtime
+
 	int (*phase_executor_weighted)(dynamic_weighted_graph *, execution_settings *, dynamic_weighted_graph **, int **, phase_execution_briefing *);
 	int (*phase_executor_not_weighted)(dynamic_graph *, execution_settings *, dynamic_weighted_graph **, int **, phase_execution_briefing *);
 
 } execution_settings;
 
 char * file_format_name(int id);
-
 int algorithm_version_parallel(int id);
-
 char * algorithm_version_name(int id);
 
 #endif

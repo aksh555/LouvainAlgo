@@ -1,16 +1,27 @@
+/**
+ * Author: Andrea Bignoli
+ * E-mail: andrea.bignoli@gmail.com
+ */
+
 #ifndef DYNAMIC_WEIGHTED_GRAPH_H
 #define DYNAMIC_WEIGHTED_GRAPH_H
+
 #define DEFAULT_WEIGHT_FOR_NOT_WEIGHTED_EDGES 1
+
+//DynamicGraph
+
 typedef struct weighted_edge {
 	int dest;
 	int weight;
 } weighted_edge;
+
 typedef struct dynamic_weighted_edge_array{
 	weighted_edge *addr;
 	int self_loop;
 	int count;
 	int size;
 } dynamic_weighted_edge_array;
+
 int dynamic_weighted_edge_array_init(dynamic_weighted_edge_array *da, int initSize);
 
 int dynamic_weighted_edge_array_insert(dynamic_weighted_edge_array *da, int dest, int weight);
