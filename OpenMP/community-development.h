@@ -58,8 +58,6 @@ int valid_minimum_improvement(double mi);
 
 void community_developer_free(community_developer *cd);
 
-void community_developer_print(community_developer *cd, int total_exchanges);
-
 void get_modularity_computing_package(modularity_computing_package *mcp,community_developer *cd, int node_index, int community_index, int k_i_in);
 
 double modularity_delta_unpackaged(int sum_in, int double_m, int sum_tot, int k_i, int k_i_in);

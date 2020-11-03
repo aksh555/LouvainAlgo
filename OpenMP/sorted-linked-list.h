@@ -1,8 +1,3 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef SORTED_LINKED_LIST_H
 #define SORTED_LINKED_LIST_H
 
@@ -15,6 +10,15 @@ typedef struct sorted_linked_list_elem {
 typedef struct sorted_linked_list {
 	sorted_linked_list_elem *head;
 } sorted_linked_list;
+
+typedef struct temporary_community_edge {
+	int self_loop;
+	sorted_linked_list sll;
+} temporary_community_edge;
+
+void temporary_community_edge_init(temporary_community_edge *tce);
+
+void temporary_community_edge_free(temporary_community_edge *tce);
 
 void sorted_linked_list_init(sorted_linked_list *sll);
 

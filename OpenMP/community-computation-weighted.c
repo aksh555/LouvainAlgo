@@ -1,42 +1,30 @@
 #include "community-computation-weighted.h"
-#include "temporary-community-edge.h"
-#include "community-computation-commons.h"
-
 #include "community-development.h"
 #include "dynamic-weighted-graph.h"
 #include "community-exchange.h"
-#include "silent-switch.h"
 #include "sorted-linked-list.h"
 #include "utilities.h"
-
-#include "execution-settings.h"
-#include "execution-briefing.h"
-
-#include "printing_controller.h"
-
+#include "input-handler.h"
+#include "execution-handler.h"
 #include <time.h>
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifdef SILENT_SWITCH_COMMUNITY_COMPUTATION_ON
-#define printf(...)
-#endif
-
 #define NODE_ITERATION_CHUNK_SIZE 500
 #define EXCHANGE_CHUNK_SIZE 60
 
-
-double removal_modularity_loss_weighted(dynamic_weighted_graph *dwg, community_developer *cd, int node_index, int k_i_in) {
+double removal_modularity_loss_weighted(dynamic_weighted_graph *dwg, community_developer *cd, int node_index, int k_i_in)
+{
 	// I assume the removal loss is equal to the gain that we would get by
 	// putting the node back in its former community.
 
 	modularity_computing_package mcp;
 
-	get_modularity_computing_package(&mcp, cd, node_index, *(cd->vertex_community+node_index), k_i_in);
+	get_modularity_computing_package(&mcp, cd, node_index, *(cd->vertex_community + node_index), k_i_in);
 
-//	// TODO Fix potential problem with self loops
-//	mcp.sum_tot -= k_i_in;
+	//	// TODO Fix potential problem with self loops
+	//	mcp.sum_tot -= k_i_in;
 	// Fix
 	mcp.sum_tot -= *(cd->incoming_weight_node + node_index);
 	mcp.sum_in = mcp.sum_in - 2 * k_i_in - (dwg->edges + node_index)->self_loop;
@@ -45,19 +33,22 @@ double removal_modularity_loss_weighted(dynamic_weighted_graph *dwg, community_d
 }
 
 // Note: Current community not included in sll. Internal links are considered and their sum is put into current_community_k_i_in. Self loops are ignored
-int get_neighbor_communities_list_weighted(sorted_linked_list *sll, dynamic_weighted_graph *dwg, community_developer *cd, int node_index, int *current_community_k_i_in) {
+int get_neighbor_communities_list_weighted(sorted_linked_list *sll, dynamic_weighted_graph *dwg, community_developer *cd, int node_index, int *current_community_k_i_in)
+{
 	dynamic_weighted_edge_array *neighbor_nodes;
 	int i;
 
 	int current_community;
 	*current_community_k_i_in = 0;
 
-	if(!dwg || !sll) {
+	if (!dwg || !sll)
+	{
 		printf("Invalid input in computation of neighbor communities!");
 		return 0;
 	}
 
-	if(node_index < 0 || node_index >= dwg->size) {
+	if (node_index < 0 || node_index >= dwg->size)
+	{
 		printf("Invalid input in computation of neighbor communities: node out of range!");
 		return 0;
 	}
@@ -68,23 +59,13 @@ int get_neighbor_communities_list_weighted(sorted_linked_list *sll, dynamic_weig
 
 	neighbor_nodes = dwg->edges + node_index;
 
-//	Self loop not included in k_i_in of current community
-
-//	if(neighbor_nodes->self_loop)
-//		if(!(sorted_linked_list_insert(sll, *(cd->vertex_community+node_index), neighbor_nodes->self_loop))) {
-//			printf("Cannot insert node in sorted linked list!");
-//
-//			sorted_linked_list_free(sll);
-//			free(sll);
-//
-//			return NULL;
-//		}
-
-	for(i = 0; i < neighbor_nodes->count; i++) {
-		if(*(cd->vertex_community + (neighbor_nodes->addr + i)->dest) == current_community)
+	for (i = 0; i < neighbor_nodes->count; i++)
+	{
+		if (*(cd->vertex_community + (neighbor_nodes->addr + i)->dest) == current_community)
 			// Link internal to current node community
 			*current_community_k_i_in += (neighbor_nodes->addr + i)->weight;
-		else if(!(sorted_linked_list_insert(sll, *(cd->vertex_community + (neighbor_nodes->addr + i)->dest), (neighbor_nodes->addr + i)->weight))) {
+		else if (!(sorted_linked_list_insert(sll, *(cd->vertex_community + (neighbor_nodes->addr + i)->dest), (neighbor_nodes->addr + i)->weight)))
+		{
 			printf("Cannot insert node in sorted linked list!");
 
 			sorted_linked_list_free(sll);
@@ -97,22 +78,25 @@ int get_neighbor_communities_list_weighted(sorted_linked_list *sll, dynamic_weig
 	return 1;
 }
 
-double compute_modularity_edge_weighted(dynamic_weighted_graph *dwg, int edge_weight, int src_incoming_weight, int dest_incoming_weight, int double_m, int src_community, int dest_community) {
-	return ((double) edge_weight - ((((double) src_incoming_weight) * ((double) dest_incoming_weight)) / ((double) double_m)) ) * same(src_community,dest_community);
-//	return ((double) edge_weight - (double) src_incoming_weight * dest_incoming_weight / double_m) * same(src_community,dest_community);
+double compute_modularity_edge_weighted(dynamic_weighted_graph *dwg, int edge_weight, int src_incoming_weight, int dest_incoming_weight, int double_m, int src_community, int dest_community)
+{
+	return ((double)edge_weight - ((((double)src_incoming_weight) * ((double)dest_incoming_weight)) / ((double)double_m))) * same(src_community, dest_community);
+	//	return ((double) edge_weight - (double) src_incoming_weight * dest_incoming_weight / double_m) * same(src_community,dest_community);
 }
 
-double compute_modularity_weighted_reference_implementation_method(community_developer *cd) {
+double compute_modularity_weighted_reference_implementation_method(community_developer *cd)
+{
 	int i;
 	double internal_weight_community;
 	double incoming_weight_community;
-	double double_m = (double) cd->double_m;
+	double double_m = (double)cd->double_m;
 
 	double result = 0;
 
-	for(i = 0; i < cd->n; i++) {
+	for (i = 0; i < cd->n; i++)
+	{
 		internal_weight_community = (double)*(cd->internal_weight_community + i);
-		incoming_weight_community = (double) *(cd->incoming_weight_community + i);
+		incoming_weight_community = (double)*(cd->incoming_weight_community + i);
 
 		result += (internal_weight_community - incoming_weight_community * incoming_weight_community / double_m);
 	}
@@ -122,18 +106,21 @@ double compute_modularity_weighted_reference_implementation_method(community_dev
 	return result;
 }
 
-double compute_modularity_weighted_reference_implementation_method_parallel(community_developer *cd) {
+double compute_modularity_weighted_reference_implementation_method_parallel(community_developer *cd)
+{
 	int i;
 	double internal_weight_community;
 	double incoming_weight_community;
-	double double_m = (double) cd->double_m;
+	double double_m = (double)cd->double_m;
 
 	double result = 0;
 
-#pragma omp parallel for schedule(dynamic, 20) default(shared) private(internal_weight_community, incoming_weight_community) reduction(+:result)
-	for(i = 0; i < cd->n; i++) {
+#pragma omp parallel for schedule(dynamic, 20) default(shared) private(internal_weight_community, incoming_weight_community) reduction(+ \
+																																	   : result)
+	for (i = 0; i < cd->n; i++)
+	{
 		internal_weight_community = (double)*(cd->internal_weight_community + i);
-		incoming_weight_community = (double) *(cd->incoming_weight_community + i);
+		incoming_weight_community = (double)*(cd->incoming_weight_community + i);
 
 		result += (internal_weight_community - incoming_weight_community * incoming_weight_community / double_m);
 	}
@@ -143,38 +130,42 @@ double compute_modularity_weighted_reference_implementation_method_parallel(comm
 	return result;
 }
 
-double compute_modularity_weighted_reference_implementation_method_range(community_developer *cd, int start, int end) {
+double compute_modularity_weighted_reference_implementation_method_range(community_developer *cd, int start, int end)
+{
 	int i;
 	double internal_weight_community;
 	double incoming_weight_community;
-	double double_m = (double) cd->double_m;
+	double double_m = (double)cd->double_m;
 
 	double result = 0;
 
-	if(!in_range(start,0,cd->n-1) || !in_range(end, start, cd->n-1)) {
+	if (!in_range(start, 0, cd->n - 1) || !in_range(end, start, cd->n - 1))
+	{
 		printf("compute_modularity_weighted_reference_implementation_method_range - Given range is not valid (%d - %d)!", start, end);
 
 		return ILLEGAL_MODULARITY_VALUE;
 	}
 
-	for(i = start; i < end; i++) {
+	for (i = start; i < end; i++)
+	{
 		internal_weight_community = (double)*(cd->internal_weight_community + i);
-		incoming_weight_community = (double) *(cd->incoming_weight_community + i);
+		incoming_weight_community = (double)*(cd->incoming_weight_community + i);
 
 		result += (internal_weight_community - incoming_weight_community * incoming_weight_community / double_m);
 
-//		result += ((double)*(cd->internal_weight_community + i) - (  (((double) *(cd->incoming_weight_community + i)) * ((double) *(cd->incoming_weight_community + i))) /((double) cd->double_m) )      );
+		//		result += ((double)*(cd->internal_weight_community + i) - (  (((double) *(cd->incoming_weight_community + i)) * ((double) *(cd->incoming_weight_community + i))) /((double) cd->double_m) )      );
 	}
 
 	result /= double_m;
 
-//	result /= ((double) cd->double_m);
+	//	result /= ((double) cd->double_m);
 
 	return result;
 }
 
 // Computes modularity as if each node was in an individual community
-double compute_modularity_init_weighted_reference_implementation_method(dynamic_weighted_graph *dwg) {
+double compute_modularity_init_weighted_reference_implementation_method(dynamic_weighted_graph *dwg)
+{
 	int i;
 
 	double result = 0;
@@ -183,11 +174,12 @@ double compute_modularity_init_weighted_reference_implementation_method(dynamic_
 
 	double_m = dynamic_weighted_graph_double_m(dwg);
 
-	for(i = 0; i < dwg->size; i++) {
-		internal_weight_community = (double) dynamic_weighted_graph_self_loop(dwg, i);
-		incoming_weight_community = (double) dynamic_weighted_graph_node_degree(dwg, i);
+	for (i = 0; i < dwg->size; i++)
+	{
+		internal_weight_community = (double)dynamic_weighted_graph_self_loop(dwg, i);
+		incoming_weight_community = (double)dynamic_weighted_graph_node_degree(dwg, i);
 
-		result += (internal_weight_community - incoming_weight_community * incoming_weight_community / double_m );
+		result += (internal_weight_community - incoming_weight_community * incoming_weight_community / double_m);
 	}
 
 	result /= double_m;
@@ -195,9 +187,10 @@ double compute_modularity_init_weighted_reference_implementation_method(dynamic_
 	return result;
 }
 
-void apply_transfer_weighted(dynamic_weighted_graph *dwg, community_developer *cd, community_exchange *exchange) {
-	const int src =  *(cd->vertex_community + exchange->node);
-	const int self_loop =  (dwg->edges + exchange->node)->self_loop;
+void apply_transfer_weighted(dynamic_weighted_graph *dwg, community_developer *cd, community_exchange *exchange)
+{
+	const int src = *(cd->vertex_community + exchange->node);
+	const int self_loop = (dwg->edges + exchange->node)->self_loop;
 
 	// Update source community sum_tot (incoming_weight_community)
 	*(cd->incoming_weight_community + src) -= *(cd->incoming_weight_node + exchange->node);
@@ -210,15 +203,16 @@ void apply_transfer_weighted(dynamic_weighted_graph *dwg, community_developer *c
 
 	*(cd->vertex_community + exchange->node) = exchange->dest;
 
-//	printf("Moving vertex %d from community %d to community %d.\n", exchange->node, src, exchange->dest);
+	//	printf("Moving vertex %d from community %d to community %d.\n", exchange->node, src, exchange->dest);
 }
 
-int output_translator_weighted(dynamic_weighted_graph *dwg, community_developer *cd, dynamic_weighted_graph **community_graph, int **community_vector) {
+int output_translator_weighted(dynamic_weighted_graph *dwg, community_developer *cd, dynamic_weighted_graph **community_graph, int **community_vector)
+{
 
 	// TODO free output, just in case
 
 	int *renumber_community;
-	int i,j;
+	int i, j;
 
 	int current_node;
 
@@ -235,32 +229,23 @@ int output_translator_weighted(dynamic_weighted_graph *dwg, community_developer 
 
 	sorted_linked_list_elem *neighbor_community;
 
-//	printf("\n\n------------- OUTPUT TRANSLATION ------------\n\n");
-//
-//	printf("Input graph:\n\n");
-
-//	dynamic_weighted_graph_print(*dwg);
-
-//	printf("\n\nInput CD:\n\n");
-
-	community_developer_print(cd,0);
-
-//	printf("Output translation - Final modularity of input (reference formula): %f\n\n", compute_modularity_weighted_reference_implementation_method(cd));
-
-	if(!(*community_graph = (dynamic_weighted_graph *) malloc (sizeof(dynamic_weighted_graph)))) {
+	if (!(*community_graph = (dynamic_weighted_graph *)malloc(sizeof(dynamic_weighted_graph))))
+	{
 		printf("Cannot allocate output community graph!");
 
 		return 0;
 	}
 
-	if(!(*community_vector = (int *) malloc (cd->n * sizeof(int)))) {
+	if (!(*community_vector = (int *)malloc(cd->n * sizeof(int))))
+	{
 		printf("Cannot allocate non_empty_community community graph!");
 
 		free(*community_graph);
 		return 0;
 	}
 
-	if(!(renumber_community = (int *) malloc (cd->n * sizeof(int)))) {
+	if (!(renumber_community = (int *)malloc(cd->n * sizeof(int))))
+	{
 		printf("Cannot allocate renumber_community community graph!");
 
 		free(*community_graph);
@@ -268,21 +253,23 @@ int output_translator_weighted(dynamic_weighted_graph *dwg, community_developer 
 		return 0;
 	}
 
-#pragma omp parallel for default(shared) private(i) schedule(dynamic,50)
-	for(i = 0; i < cd->n ; i++)
-		*(renumber_community+i) = -1;
+#pragma omp parallel for default(shared) private(i) schedule(dynamic, 50)
+	for (i = 0; i < cd->n; i++)
+		*(renumber_community + i) = -1;
 
-//	#pragma omp parallel for scheduling(dynamic,10) shared(non_empty_community) private(i, community)
-	for(i = 0; i < cd->n ; i++) {
+	//	#pragma omp parallel for scheduling(dynamic,10) shared(non_empty_community) private(i, community)
+	for (i = 0; i < cd->n; i++)
+	{
 		community = *(cd->vertex_community + i);
 
-		if(*(renumber_community+community) != -1)
+		if (*(renumber_community + community) != -1)
 			// Community is already re-numbered
-			*(*community_vector+i) = *(renumber_community+community);
-		else {
+			*(*community_vector + i) = *(renumber_community + community);
+		else
+		{
 			// Community isn't re-numbered yet
-			*(renumber_community+community) = total_communities;
-			*(*community_vector+i) = total_communities;
+			*(renumber_community + community) = total_communities;
+			*(*community_vector + i) = total_communities;
 
 			total_communities++;
 		}
@@ -292,7 +279,8 @@ int output_translator_weighted(dynamic_weighted_graph *dwg, community_developer 
 
 	dynamic_weighted_graph_init(*community_graph, total_communities);
 
-	if(!(tce = (temporary_community_edge*) malloc(total_communities * sizeof(temporary_community_edge)))) {
+	if (!(tce = (temporary_community_edge *)malloc(total_communities * sizeof(temporary_community_edge))))
+	{
 		printf("Cannot allocate temporary_community_edge community graph!");
 
 		free(*community_graph);
@@ -300,40 +288,45 @@ int output_translator_weighted(dynamic_weighted_graph *dwg, community_developer 
 		return 0;
 	}
 
-	#pragma omp parallel for schedule(dynamic,50) default(shared) private(i)
-	for(i = 0; i < total_communities; i++)
-		temporary_community_edge_init(tce+i);
+#pragma omp parallel for schedule(dynamic, 50) default(shared) private(i)
+	for (i = 0; i < total_communities; i++)
+		temporary_community_edge_init(tce + i);
 
 	// -------------------------------- SEQUENTIAL SECTION
 
-	for(current_node = 0; current_node < cd->n ; current_node++) {
+	for (current_node = 0; current_node < cd->n; current_node++)
+	{
 		neighbors = *(dwg->edges + current_node);
-		community_of_current_node = *(*community_vector+current_node);
+		community_of_current_node = *(*community_vector + current_node);
 
-//		// TODO Review this instruction
-		(tce+community_of_current_node)->self_loop += (dwg->edges + current_node)->self_loop;
+		//		// TODO Review this instruction
+		(tce + community_of_current_node)->self_loop += (dwg->edges + current_node)->self_loop;
 
-		for(j = 0; j < neighbors.count; j++){
-			neighbor = *(neighbors.addr+j);
+		for (j = 0; j < neighbors.count; j++)
+		{
+			neighbor = *(neighbors.addr + j);
 
-			if(*(*community_vector+neighbor.dest) == community_of_current_node)
+			if (*(*community_vector + neighbor.dest) == community_of_current_node)
 				// Community selfloop
-				(tce+community_of_current_node)->self_loop += neighbor.weight;
+				(tce + community_of_current_node)->self_loop += neighbor.weight;
 			else
-				sorted_linked_list_insert(&((tce+community_of_current_node)->sll), *(*community_vector+neighbor.dest), neighbor.weight);
+				sorted_linked_list_insert(&((tce + community_of_current_node)->sll), *(*community_vector + neighbor.dest), neighbor.weight);
 		}
 	}
 
 	// -------------------------------- END OF SEQUENTIAL SECTION
 
-//	#pragma omp parallel for schedule(dynamic,10) default(shared) private(i)
-	for(i = 0; i < total_communities; i++) {
-		((*community_graph)->edges + i)->self_loop = (tce+i)->self_loop;
+	//	#pragma omp parallel for schedule(dynamic,10) default(shared) private(i)
+	for (i = 0; i < total_communities; i++)
+	{
+		((*community_graph)->edges + i)->self_loop = (tce + i)->self_loop;
 
-		neighbor_community = ((tce+i)->sll).head;
-		while(neighbor_community) {
+		neighbor_community = ((tce + i)->sll).head;
+		while (neighbor_community)
+		{
 			// Force directed is needed to avoid having duplicated edges
-			if(!(dynamic_weighted_graph_insert_force_directed(*community_graph, i, neighbor_community->community, neighbor_community->k_i_in))) {
+			if (!(dynamic_weighted_graph_insert_force_directed(*community_graph, i, neighbor_community->community, neighbor_community->k_i_in)))
+			{
 				printf("Output translation - Could not insert edge %d - %d", i, neighbor_community->community);
 
 				temporary_community_edge_free(tce);
@@ -352,7 +345,8 @@ int output_translator_weighted(dynamic_weighted_graph *dwg, community_developer 
 	temporary_community_edge_free(tce);
 	free(tce);
 
-	if(!dynamic_weighted_graph_reduce(*community_graph)) {
+	if (!dynamic_weighted_graph_reduce(*community_graph))
+	{
 		printf("Output translation - Couldn't reduce output graph!");
 
 		dynamic_weighted_graph_free(*community_graph);
@@ -366,7 +360,8 @@ int output_translator_weighted(dynamic_weighted_graph *dwg, community_developer 
 }
 
 // Executes a phase of the algorithm, returns modularity gain
-int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *settings, dynamic_weighted_graph **community_graph, int **community_vector, phase_execution_briefing *briefing) {
+int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *settings, dynamic_weighted_graph **community_graph, int **community_vector, phase_execution_briefing *briefing)
+{
 	community_developer cd;
 
 	double initial_phase_modularity, final_phase_modularity;
@@ -386,7 +381,7 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 
 	community_exchange *node_exchanges_base_pointer;
 
-	int base,total_exchanges;
+	int base, total_exchanges;
 	int exchange_index;
 
 	community_exchange *sorted_output_multi_thread;
@@ -396,9 +391,7 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 	short *selected;
 	int stop_scanning_position;
 
-	int i,j;
-
-
+	int i, j;
 
 	int phase_iteration_counter = 0;
 
@@ -414,7 +407,8 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 	wtime_phase_begin = omp_get_wtime();
 
 	// Minimum improvement refers to iteration improvement
-	if(!dwg || !valid_minimum_improvement(minimum_improvement)) {
+	if (!dwg || !valid_minimum_improvement(minimum_improvement))
+	{
 		printf("Invalid phase parameters!");
 
 		return 0;
@@ -426,14 +420,13 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 
 	wtime_phase_init_cd_end = omp_get_wtime();
 
-//	community_developer_print(&cd,0);
-
 	initial_phase_modularity = compute_modularity_weighted_reference_implementation_method_parallel(&cd);
 	final_iteration_modularity = initial_phase_modularity;
 
 	wtime_iteration_duration_avg = 0;
 
-	do {
+	do
+	{
 
 		full_iteration = 0;
 
@@ -451,14 +444,15 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 
 		// Do the parallel iterations over all nodes
 		// TODO put Parallel for - Everything else is good to go
-#pragma omp parallel for default(shared) schedule(dynamic,NODE_ITERATION_CHUNK_SIZE) \
-	private(i, node_exchanges_base_pointer, number_of_neighbor_communities,neighbors, current_community_k_i_in, removal_loss, neighbor, mcp, to_neighbor_modularity_delta, gain) \
-	reduction(+:total_exchanges)
-		for(i = 0; i < dwg->size; i++) {
+#pragma omp parallel for default(shared) schedule(dynamic, NODE_ITERATION_CHUNK_SIZE) private(i, node_exchanges_base_pointer, number_of_neighbor_communities, neighbors, current_community_k_i_in, removal_loss, neighbor, mcp, to_neighbor_modularity_delta, gain) \
+	reduction(+                                                                                                                                                                                                                                                     \
+			  : total_exchanges)
+		for (i = 0; i < dwg->size; i++)
+		{
 
-//			printf("NODE ITERATION - Thread #%d on node %d\n", omp_get_thread_num(), i);
+			//			printf("NODE ITERATION - Thread #%d on node %d\n", omp_get_thread_num(), i);
 
-			if(i > 0)
+			if (i > 0)
 				node_exchanges_base_pointer = cd.exchange_ranking + *(cd.cumulative_edge_number + i - 1);
 			else
 				node_exchanges_base_pointer = cd.exchange_ranking;
@@ -469,28 +463,29 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 			sorted_linked_list_init(&neighbors);
 
 			// Compute neighbor communities and k_i_in
-			if(get_neighbor_communities_list_weighted(&neighbors,dwg,&cd,i,&current_community_k_i_in)) {
-
+			if (get_neighbor_communities_list_weighted(&neighbors, dwg, &cd, i, &current_community_k_i_in))
+			{
 
 				removal_loss = removal_modularity_loss_weighted(dwg, &cd, i, current_community_k_i_in);
 
 				neighbor = neighbors.head;
-				while(neighbor){
+				while (neighbor)
+				{
 					// Note that by the definition of get_neighbor_communities_list_weighted current community isn't in the list
 
 					// Compute modularity variation that would be achieved my moving node i from its current community to the neighbor community considered (neighbor->community)
-					get_modularity_computing_package(&mcp,&cd,i,neighbor->community,neighbor->k_i_in);
+					get_modularity_computing_package(&mcp, &cd, i, neighbor->community, neighbor->k_i_in);
 					to_neighbor_modularity_delta = modularity_delta(&mcp);
 
 					// Check if the gain is worth to be considered
 					gain = to_neighbor_modularity_delta - removal_loss;
-					if(gain > MINIMUM_TRANSFER_GAIN) {
+					if (gain > MINIMUM_TRANSFER_GAIN)
+					{
 						// Put computed potential transfer in its correct position for later community pairing selection
 
-						set_exchange_ranking(node_exchanges_base_pointer + number_of_neighbor_communities,i,neighbor->community,current_community_k_i_in, neighbor->k_i_in,gain);
+						set_exchange_ranking(node_exchanges_base_pointer + number_of_neighbor_communities, i, neighbor->community, current_community_k_i_in, neighbor->k_i_in, gain);
 
 						number_of_neighbor_communities += 1;
-
 					}
 
 					neighbor = neighbor->next;
@@ -499,13 +494,15 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 				sorted_linked_list_free(&neighbors);
 
 				*(cd.vertex_neighbor_communities + i) = number_of_neighbor_communities;
-				total_exchanges+=number_of_neighbor_communities;
-			} else
+				total_exchanges += number_of_neighbor_communities;
+			}
+			else
 #pragma omp atomic
 				neighbor_communities_bad_computation++;
 		}
 
-		if(neighbor_communities_bad_computation) {
+		if (neighbor_communities_bad_computation)
+		{
 			printf("Could not compute neighbor communities!\n");
 
 			return 0;
@@ -513,11 +510,12 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 
 		wtime_iteration_node_scan_end = omp_get_wtime();
 
-		if(total_exchanges > 0) {
+		if (total_exchanges > 0)
+		{
 
 			full_iteration = 1;
 
-		// -------------------------------- SEQUENTIAL SECTION
+			// -------------------------------- SEQUENTIAL SECTION
 
 			wtime_iteration_edge_compression_begin = omp_get_wtime();
 
@@ -526,17 +524,18 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 
 			exchange_index = 0;
 
-			do {
-				exchange_index += *(cd.vertex_neighbor_communities+base);
+			do
+			{
+				exchange_index += *(cd.vertex_neighbor_communities + base);
 				base++;
-			}while(base < dwg->size && *(cd.cumulative_edge_number+base-1) == exchange_index);
+			} while (base < dwg->size && *(cd.cumulative_edge_number + base - 1) == exchange_index);
 
-			for(i = base; i < dwg->size; i++)
-				for(j = 0; j < *(cd.vertex_neighbor_communities + i); j++) {
+			for (i = base; i < dwg->size; i++)
+				for (j = 0; j < *(cd.vertex_neighbor_communities + i); j++)
+				{
 					*(cd.exchange_ranking + exchange_index) = *(cd.exchange_ranking + *(cd.cumulative_edge_number + i - 1) + j);
 
 					exchange_index++;
-
 				}
 
 			// total_exchanges represents the total number of active exchanges to be sorted
@@ -549,13 +548,14 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 
 			wtime_iteration_edge_sorting_begin = omp_get_wtime();
 
-			if(!community_exchange_parallel_quick_sort_main(cd.exchange_ranking, total_exchanges, settings, &sorted_output_multi_thread)){
+			if (!community_exchange_parallel_quick_sort_main(cd.exchange_ranking, total_exchanges, settings, &sorted_output_multi_thread))
+			{
 				printf("Couldn't sort exchange pairings!");
 
 				return 0;
 			}
 
-			if(sorted_output_multi_thread)
+			if (sorted_output_multi_thread)
 				sorted_output_multi_thread_needs_free = 1;
 			else
 				sorted_output_multi_thread = cd.exchange_ranking;
@@ -568,7 +568,8 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 
 			wtime_iteration_edge_selection_begin = omp_get_wtime();
 
-			if(!sequential_select_pairings(&cd, sorted_output_multi_thread, total_exchanges, &selected, &stop_scanning_position)) {
+			if (!sequential_select_pairings(&cd, sorted_output_multi_thread, total_exchanges, &selected, &stop_scanning_position))
+			{
 				printf("Couldn't select exchange pairings!");
 
 				return 0;
@@ -577,23 +578,24 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 			wtime_iteration_edge_selection_end = omp_get_wtime();
 
 			wtime_iteration_edge_apply_begin = omp_get_wtime();
-#pragma omp parallel for schedule(dynamic,EXCHANGE_CHUNK_SIZE) default(shared) private(i)
-			for(i = 0; i < stop_scanning_position; i++)
-				if(*(selected + i))
-					apply_transfer_weighted(dwg,&cd,sorted_output_multi_thread+i);
+#pragma omp parallel for schedule(dynamic, EXCHANGE_CHUNK_SIZE) default(shared) private(i)
+			for (i = 0; i < stop_scanning_position; i++)
+				if (*(selected + i))
+					apply_transfer_weighted(dwg, &cd, sorted_output_multi_thread + i);
 
 			wtime_iteration_edge_apply_end = omp_get_wtime();
 
 			// Free memory used in the last computations
 			free(selected);
-			if(sorted_output_multi_thread_needs_free)
+			if (sorted_output_multi_thread_needs_free)
 				free(sorted_output_multi_thread);
 
 			// TODO End of substitute
 
 			final_iteration_modularity = compute_modularity_weighted_reference_implementation_method_parallel(&cd);
-
-		} else {
+		}
+		else
+		{
 			final_iteration_modularity = initial_iteration_modularity;
 
 			wtime_iteration_edge_compression_begin = 0;
@@ -606,18 +608,18 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 			wtime_iteration_edge_apply_end = 0;
 		}
 
-		wtime_iteration_end =  omp_get_wtime();
+		wtime_iteration_end = omp_get_wtime();
 
-		wtime_iteration_node_scan = wtime_iteration_node_scan_end- wtime_iteration_node_scan_begin;
+		wtime_iteration_node_scan = wtime_iteration_node_scan_end - wtime_iteration_node_scan_begin;
 		wtime_iteration_edge_compression = wtime_iteration_edge_compression_end - wtime_iteration_edge_compression_begin;
 		wtime_iteration_edge_sorting = wtime_iteration_edge_sorting_end - wtime_iteration_edge_sorting_begin;
 		wtime_iteration_edge_selection = wtime_iteration_edge_selection_end - wtime_iteration_edge_selection_begin;
 		wtime_iteration_edge_apply = wtime_iteration_edge_apply_end - wtime_iteration_edge_apply_begin;
 		wtime_iteration = wtime_iteration_end - wtime_iteration_begin;
 
-		if(full_iteration)
-			wtime_iteration_duration_avg = merge_average(wtime_iteration_duration_avg, phase_iteration_counter,wtime_iteration, 1);
-		else if(wtime_iteration_duration_avg == 0)
+		if (full_iteration)
+			wtime_iteration_duration_avg = merge_average(wtime_iteration_duration_avg, phase_iteration_counter, wtime_iteration, 1);
+		else if (wtime_iteration_duration_avg == 0)
 			wtime_iteration_duration_avg = wtime_iteration;
 
 		phase_iteration_counter++;
@@ -631,7 +633,6 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 	final_phase_modularity = final_iteration_modularity;
 
 	// New communities graph and results should be passed
-	// TODO
 	briefing->execution_successful = 1;
 	briefing->number_of_iterations = phase_iteration_counter;
 	briefing->output_modularity = final_phase_modularity;
@@ -639,4 +640,3 @@ int parallel_phase_weighted(dynamic_weighted_graph *dwg, execution_settings *set
 
 	return 1;
 }
-

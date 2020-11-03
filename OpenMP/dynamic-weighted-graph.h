@@ -1,14 +1,9 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef DYNAMIC_WEIGHTED_GRAPH_H
 #define DYNAMIC_WEIGHTED_GRAPH_H
 
 #define DEFAULT_WEIGHT_FOR_NOT_WEIGHTED_EDGES 1
-
-//DynamicGraph
+#define DEFAULT_INIT_NODES_SIZE 100
+#define DEFAULT_INIT_NEIGHBOURS_SIZE 100
 
 typedef struct weighted_edge {
 	int dest;
@@ -21,6 +16,24 @@ typedef struct dynamic_weighted_edge_array{
 	int count;
 	int size;
 } dynamic_weighted_edge_array;
+
+typedef struct edge {
+	int dest;
+} edge;
+
+typedef struct dynamic_edge_array{
+	edge *addr;
+	int self_loop;
+	int count;
+	int size;
+} dynamic_edge_array;
+
+typedef struct dynamic_graph{
+		dynamic_edge_array *edges;       //List of adjacency lists of vertices in array form
+        int size;
+        int maxn;
+        } dynamic_graph;
+
 
 int dynamic_weighted_edge_array_init(dynamic_weighted_edge_array *da, int initSize);
 

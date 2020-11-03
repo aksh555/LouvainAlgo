@@ -1,17 +1,6 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "dynamic-weighted-graph.h"
-#include "shared-graph.h"
-#include "silent-switch.h"
-
-#ifdef SILENT_SWITCH_DYNAMIC_GRAPH_ON
-#define printf(...)
-#endif
 
 int dynamic_weighted_edge_array_init(dynamic_weighted_edge_array *da, int initSize)
 {
@@ -23,6 +12,20 @@ int dynamic_weighted_edge_array_init(dynamic_weighted_edge_array *da, int initSi
 	if( da->addr = (weighted_edge*) malloc(initSize * sizeof(weighted_edge)) )
 		return 1;
 	return 0;
+}
+
+int increase_size_policy(int currentSize, int neededSize)
+{
+	int size;
+
+	size = currentSize;
+
+	while (size < neededSize)
+	{
+		size *= 2;
+	}
+
+	return size;
 }
 
 int dynamic_weighted_edge_array_insert(dynamic_weighted_edge_array *da, int dest, int weight)

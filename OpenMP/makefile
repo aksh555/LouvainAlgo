@@ -1,6 +1,8 @@
 RM := rm
 
-# All of the sources participating in the build are defined here
+USER_OBJS :=
+LIBS :=
+
 -include sources.mk
 -include subdir.mk
 -include objects.mk
@@ -11,19 +13,14 @@ ifneq ($(strip $(C_DEPS)),)
 endif
 endif
 
-# Add inputs and outputs from these tool invocations to the build variables 
-
-# All Target
 all: find-communities-OpenMP
 
 %.o: %.c
-	gcc -fopenmp -O2 -g -w -c -fopenmp -o $@ $<
+	${Q} gcc -fopenmp -O2 -g -w -c -fopenmp -o $@ $<
 
-# Tool invocations
 find-communities-OpenMP: $(OBJS) $(USER_OBJS)
-	gcc -fopenmp -w -o "find-communities-OpenMP" $(OBJS) $(USER_OBJS)
+	${Q} gcc -fopenmp -w -o "find-communities-OpenMP" $(OBJS) $(USER_OBJS)
 
-# Other Targets
 clean:
 	-$(RM) $(EXECUTABLES)$(OBJS) find-communities-OpenMP
 

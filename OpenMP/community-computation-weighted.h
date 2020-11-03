@@ -1,8 +1,3 @@
-/**
- * Author: Andrea Bignoli
- * E-mail: andrea.bignoli@gmail.com
- */
-
 #ifndef COMMUNITY_COMPUTATION_WEIGHTED_H
 #define COMMUNITY_COMPUTATION_WEIGHTED_H
 
