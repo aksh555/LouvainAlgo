@@ -61,7 +61,7 @@ void set_default(execution_settings *s)
 	s->minimum_iteration_improvement = 0;
 	s->output_communities_file = NULL;
 	s->output_graphs_file = NULL;
-	s->number_of_threads = 4;
+	s->number_of_threads = 16;
 	s->algorithm_version = 1;
 	s->execution_settings_parallel_partitions_higher_power_of_2 = 0;
 }

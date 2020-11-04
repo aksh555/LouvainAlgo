@@ -1,0 +1,25 @@
+
+End of Phase #0
+
+	Initial modularity:                 -1262.222216
+	Final modularity:                   -236.297923
+	Gain:                               1025.924293
+	Execution time:                     1.304608s
+	Execution time over all threads:    3.494535s
+	Number of iterations:               13
+
+End of Phase #1
+
+	Initial modularity:                 -236.297923
+	Final modularity:                   -252.301062
+	Gain:                               -16.003139
+	Execution time:                     0.447868s
+	Execution time over all threads:    0.667764s
+	Number of iterations:               1
+
+Execution Summary
+
+	Average modularity obtained:                         -252.301062
+	Average execution time:                              1.752476s
+	Average sum of execution time over all threads:      4.162299s
+	Total execution time:                                1.819166s

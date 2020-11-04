@@ -1,0 +1,61 @@
+
+End of Phase #0
+
+	Initial modularity:                 -0.000199
+	Final modularity:                   0.531766
+	Gain:                               0.531966
+	Execution time:                     0.050436s
+	Execution time over all threads:    0.193282s
+	Number of iterations:               53
+
+End of Phase #1
+
+	Initial modularity:                 0.531766
+	Final modularity:                   0.752564
+	Gain:                               0.220797
+	Execution time:                     0.024766s
+	Execution time over all threads:    0.096663s
+	Number of iterations:               148
+
+End of Phase #2
+
+	Initial modularity:                 0.752564
+	Final modularity:                   0.808597
+	Gain:                               0.056033
+	Execution time:                     0.004398s
+	Execution time over all threads:    0.017092s
+	Number of iterations:               19
+
+End of Phase #3
+
+	Initial modularity:                 0.808597
+	Final modularity:                   0.814454
+	Gain:                               0.005858
+	Execution time:                     0.000891s
+	Execution time over all threads:    0.005107s
+	Number of iterations:               7
+
+End of Phase #4
+
+	Initial modularity:                 0.814454
+	Final modularity:                   0.814492
+	Gain:                               0.000037
+	Execution time:                     0.000196s
+	Execution time over all threads:    0.000196s
+	Number of iterations:               2
+
+End of Phase #5
+
+	Initial modularity:                 0.814492
+	Final modularity:                   0.814492
+	Gain:                               0.000000
+	Execution time:                     0.000127s
+	Execution time over all threads:    0.006165s
+	Number of iterations:               1
+
+Execution Summary
+
+	Average modularity obtained:                         0.814492
+	Average execution time:                              0.080814s
+	Average sum of execution time over all threads:      0.318505s
+	Total execution time:                                0.081649s
