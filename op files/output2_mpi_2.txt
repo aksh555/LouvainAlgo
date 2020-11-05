@@ -1,0 +1,137 @@
+
+-------------------------------------------------------
+Graph edge distribution characteristics
+-------------------------------------------------------
+Number of vertices: 9716
+Number of edges: 3791634
+Maximum number of edges: 1907508
+Average number of edges: 1.89582e+06
+Expected value of X^2: 3.59426e+12
+Variance: 1.36679e+08
+Standard deviation: 11691
+-------------------------------------------------------
+Rank 0: constantForSecondTerm: 2.63739e-07
+Rank 1: constantForSecondTerm: 2.63739e-07
+Threshold: 0.01
+Rank 1: Initial communication setup time before Louvain iteration 0.102906s
+Rank 0: Initial communication setup time before Louvain iteration 0.10289s
+
+************************************* 
+
+Louvain iteration #: 0
+Rank 0: 
+	Rank 1: 
+	Remote community map size: 1642 
+	Iteration time: 0.0838931s
+Remote community map size: 1523 
+	Iteration time: 0.0838301s
+Rank 1: Total number of remote communities to update: 1642
+Rank 0: Total number of remote communities to update: 1523
+Rank 1: Remote community MPI time: 0.0126074s
+Rank 0: Remote community MPI time: 0.0352483s
+Rank 1:
+	Cluster Weight: 0
+	Current Modularity 0.000266134
+	Reduction time: 0.0345026
+Rank 0:
+	Cluster Weight: 0
+	Current Modularity 0.000266134
+	Reduction time: 1.2186e-05
+
+************************************* 
+
+Louvain iteration #: 1
+Rank 0: 
+	Remote community map size: 1523 
+	Iteration time: 0.087991s
+Rank 1: 
+	Remote community map size: 1642 
+	Iteration time: 0.111221s
+Rank 1: Total number of remote communities to update: 1338
+Rank 0: Total number of remote communities to update: 489
+Rank 1: Remote community MPI time: 0.000207698s
+Rank 0: Remote community MPI time: 2.7523e-05s
+Rank 0:
+	Cluster Weight: 92505
+	Current Modularity 0.0470412
+	Reduction time: 0.00532373
+Rank 1:
+	Cluster Weight: 87945
+	Current Modularity 0.0470412
+	Reduction time: 6.0722e-05
+
+************************************* 
+
+Louvain iteration #: 2
+Rank 1: 
+	Remote community map size: 1642 
+	Iteration time: 0.0997613s
+Rank 0: 
+	Remote community map size: 1523 
+	Iteration time: 0.102138s
+Rank 0: Total number of remote communities to update: 223
+Rank 1: Total number of remote communities to update: 758
+Rank 0: Remote community MPI time: 0.0225574s
+Rank 1: Remote community MPI time: 0.00573011s
+Rank 0:
+	Cluster Weight: 149404
+	Current Modularity 0.0767743
+	Reduction time: 0.0247187
+Rank 1:
+	Cluster Weight: 145526
+	Current Modularity 0.0767743
+	Reduction time: 6.7745e-05
+
+************************************* 
+
+Louvain iteration #: 3
+Rank 0: 
+	Remote community map size: 1523 
+	Iteration time: 0.0913953s
+Rank 1: 
+	Remote community map size: 1642 
+	Iteration time: 0.0912567s
+Rank 0: Total number of remote communities to update: 161
+Rank 1: Total number of remote communities to update: 544
+Rank 0: Remote community MPI time: 0.0155039s
+Rank 1: Remote community MPI time: 2.3173e-05s
+Rank 0:
+	Cluster Weight: 179040
+	Current Modularity 0.0911039
+	Reduction time: 0.0160684
+Rank 1:
+	Cluster Weight: 176720
+	Current Modularity 0.0911039
+	Reduction time: 3.543e-05
+
+************************************* 
+
+Louvain iteration #: 4
+Rank 0: 
+	Remote community map size: 1523 
+	Iteration time: 0.13303s
+Rank 1: 
+	Remote community map size: 1642 
+	Iteration time: 0.120538s
+Rank 1: Total number of remote communities to update: 468
+Rank 0: Total number of remote communities to update: 122
+Rank 0: Remote community MPI time: 2.2765e-05s
+Rank 1: Remote community MPI time: 0.0012051s
+Rank 0:
+	Cluster Weight: 211308
+	Current Modularity 0.0929828
+	Reduction time: 7.234e-06
+Rank 1:
+	Cluster Weight: 216872
+	Current Modularity 0.0929828
+	Reduction time: 0.00289595
+
+************************************* 
+
+
+Execution Summary
+
+	Average total time: 2.02923s
+	No. of Processes used: 2
+	Final Modularity: 0.0911039
+	Total no. of phases: 5

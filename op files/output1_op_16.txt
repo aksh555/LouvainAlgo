@@ -1,0 +1,106 @@
+
+End of Phase #0
+
+	Initial modularity:                 -0.000001
+	Final modularity:                   0.450104
+	Gain:                               0.450105
+	Execution time:                     1.493716s
+	Execution time over all threads:    7.571804s
+	Number of iterations:               21
+
+End of Phase #1
+
+	Initial modularity:                 0.450104
+	Final modularity:                   0.733768
+	Gain:                               0.283664
+	Execution time:                     0.553611s
+	Execution time over all threads:    3.220454s
+	Number of iterations:               21
+
+End of Phase #2
+
+	Initial modularity:                 0.733768
+	Final modularity:                   0.877036
+	Gain:                               0.143267
+	Execution time:                     0.272717s
+	Execution time over all threads:    1.592377s
+	Number of iterations:               22
+
+End of Phase #3
+
+	Initial modularity:                 0.877036
+	Final modularity:                   0.946426
+	Gain:                               0.069391
+	Execution time:                     0.184126s
+	Execution time over all threads:    1.007664s
+	Number of iterations:               28
+
+End of Phase #4
+
+	Initial modularity:                 0.946426
+	Final modularity:                   0.976838
+	Gain:                               0.030411
+	Execution time:                     0.071015s
+	Execution time over all threads:    0.348769s
+	Number of iterations:               19
+
+End of Phase #5
+
+	Initial modularity:                 0.976838
+	Final modularity:                   0.987698
+	Gain:                               0.010861
+	Execution time:                     0.039115s
+	Execution time over all threads:    0.157080s
+	Number of iterations:               14
+
+End of Phase #6
+
+	Initial modularity:                 0.987698
+	Final modularity:                   0.989266
+	Gain:                               0.001568
+	Execution time:                     0.018522s
+	Execution time over all threads:    0.115143s
+	Number of iterations:               10
+
+End of Phase #7
+
+	Initial modularity:                 0.989266
+	Final modularity:                   0.989279
+	Gain:                               0.000012
+	Execution time:                     0.000717s
+	Execution time over all threads:    0.002495s
+	Number of iterations:               2
+
+End of Phase #8
+
+	Initial modularity:                 0.989279
+	Final modularity:                   0.989279
+	Gain:                               0.000000
+	Execution time:                     0.000528s
+	Execution time over all threads:    0.001560s
+	Number of iterations:               1
+
+End of Phase #9
+
+	Initial modularity:                 0.989279
+	Final modularity:                   0.989279
+	Gain:                               0.000000
+	Execution time:                     0.000539s
+	Execution time over all threads:    0.001547s
+	Number of iterations:               1
+
+End of Phase #10
+
+	Initial modularity:                 0.989279
+	Final modularity:                   0.989279
+	Gain:                               -0.000000
+	Execution time:                     0.000535s
+	Execution time over all threads:    0.001533s
+	Number of iterations:               1
+
+Execution Summary
+
+	Average modularity obtained:                         0.989279
+	Average execution time:                              2.635141s
+	Average sum of execution time over all threads:      14.020426s
+	Total execution time:                                2.680934s

@@ -1,0 +1,58 @@
+Begin: Thu Nov  5 20:29:20 2020
+level 0:
+  start computation: Thu Nov  5 20:29:20 2020
+  network size: 1090920 communities, 4405733 links, 4.40573e+06 weight.
+  modularity increased from -0.0559249 to 0.240057
+  end computation: Thu Nov  5 20:30:06 2020
+  Time taken: 46 sec.
+level 1:
+  start computation: Thu Nov  5 20:30:06 2020
+  network size: 448706 communities, 2388610 links, 4.40573e+06 weight.
+  modularity increased from 0.240057 to 0.389576
+  end computation: Thu Nov  5 20:30:29 2020
+  Time taken: 23 sec.
+level 2:
+  start computation: Thu Nov  5 20:30:29 2020
+  network size: 166416 communities, 905878 links, 4.40573e+06 weight.
+  modularity increased from 0.389576 to 0.452431
+  end computation: Thu Nov  5 20:30:41 2020
+  Time taken: 12 sec.
+level 3:
+  start computation: Thu Nov  5 20:30:41 2020
+  network size: 57301 communities, 314477 links, 4.40573e+06 weight.
+  modularity increased from 0.452431 to 0.477532
+  end computation: Thu Nov  5 20:30:44 2020
+  Time taken: 3 sec.
+level 4:
+  start computation: Thu Nov  5 20:30:44 2020
+  network size: 21727 communities, 109957 links, 4.40573e+06 weight.
+  modularity increased from 0.477532 to 0.489304
+  end computation: Thu Nov  5 20:30:46 2020
+  Time taken: 2 sec.
+level 5:
+  start computation: Thu Nov  5 20:30:46 2020
+  network size: 10254 communities, 39826 links, 4.40573e+06 weight.
+  modularity increased from 0.489304 to 0.492987
+  end computation: Thu Nov  5 20:30:46 2020
+  Time taken: 0 sec.
+level 6:
+  start computation: Thu Nov  5 20:30:46 2020
+  network size: 6725 communities, 17029 links, 4.40573e+06 weight.
+  modularity increased from 0.492987 to 0.493553
+  end computation: Thu Nov  5 20:30:47 2020
+  Time taken: 1 sec.
+level 7:
+  start computation: Thu Nov  5 20:30:47 2020
+  network size: 5942 communities, 11722 links, 4.40573e+06 weight.
+  modularity increased from 0.493553 to 0.493581
+  end computation: Thu Nov  5 20:30:47 2020
+  Time taken: 0 sec.
+level 8:
+  start computation: Thu Nov  5 20:30:47 2020
+  network size: 5920 communities, 11574 links, 4.40573e+06 weight.
+  modularity increased from 0.493581 to 0.493581
+  end computation: Thu Nov  5 20:30:47 2020
+  Time taken: 0 sec.
+End: Thu Nov  5 20:30:47 2020
+Total duration: 87 sec.
+0.493581
